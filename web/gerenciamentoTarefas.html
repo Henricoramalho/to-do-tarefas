@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="gerenciamentoTarefas.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerenciador de Tarefas</h1>
+        </header>
+        <main>
+            <section class="formulario">
+                <input type="text" id="descricao" placeholder="Descrição da tarefa">
+                <select id="prioridade">
+                    <option value="BAIXA">Baixa</option>
+                    <option value="MEDIA">Média</option>
+                    <option value="ALTA">Alta</option>
+                </select>
+                <input type="datetime-local" id="dataCadastro">
+                <button id="adicionar">Adicionar Tarefa</button>
+            </section>
+            <section class="filtros">
+                <label for="filtro-prioridade">Filtrar por Prioridade:</label>
+                <select id="filtro-prioridade">
+                    <option value="">Todos</option>
+                    <option value="BAIXA">Baixa</option>
+                    <option value="MEDIA">Média</option>
+                    <option value="ALTA">Alta</option>
+                </select>
+                <label for="filtro-status">Filtrar por Status:</label>
+                <select id="filtro-status">
+                    <option value="">Todos</option>
+                    <option value="AFAZER">A Fazer</option>
+                    <option value="FAZENDO">Fazendo</option>
+                    <option value="PRONTO">Pronto</option>
+                </select>
+            </section>
+            <section class="tarefas">
+                <ul id="lista-tarefas"></ul>
+            </section>
+        </main>
+    </div>
+    <script src="gerenciamentoTarefas.js"></script>
+</body>
+</html>
