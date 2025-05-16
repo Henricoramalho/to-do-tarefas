@@ -1,56 +1,57 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
-exports.create = async (req, res) => {
-  const { usuarioId, descricao, setor, prioridade } = req.body;
+async function criarTarefa(req, res) {
+  const { descricao, setor, prioridade, usuarioId } = req.body;
+
+  if (!descricao || !setor || !prioridade || !usuarioId) {
+    return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
+  }
+
   try {
     const tarefa = await prisma.tarefa.create({
-      data: {
-        usuarioId,
-        descricao,
-        setor,
-        prioridade,
-      },
+      data: { descricao, setor, prioridade, usuarioId }
     });
-    res.status(201).json(tarefa);
+    res.json(tarefa);
   } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+  console.error("Erro ao cadastrar tarefa:", error);
+  res.status(400).json({ erro: 'Erro ao cadastrar tarefa', detalhes: error.message });
+}
 
-exports.getAll = async (req, res) => {
-  try {
-    const tarefas = await prisma.tarefa.findMany({
-      include: { usuario: true }, // Inclui dados do usuário
-    });
-    res.status(200).json(tarefas);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+}
 
-exports.update = async (req, res) => {
-  const { id } = req.params;
-  const { status, prioridade } = req.body;
+async function listarTarefas(req, res) {
+  const tarefas = await prisma.tarefa.findMany({ include: { usuario: true } })
+  res.json(tarefas)
+}
+
+async function atualizarTarefa(req, res) {
+  const { id } = req.params
+  const { descricao, setor, prioridade, status } = req.body
   try {
     const tarefa = await prisma.tarefa.update({
       where: { id: Number(id) },
-      data: { status, prioridade },
-    });
-    res.status(200).json(tarefa);
+      data: { descricao, setor, prioridade, status }
+    })
+    res.json(tarefa)
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ erro: 'Erro ao atualizar tarefa' })
   }
-};
+}
 
-exports.delete = async (req, res) => {
-  const { id } = req.params;
+async function deletarTarefa(req, res) {
+  const { id } = req.params
   try {
-    await prisma.tarefa.delete({
-      where: { id: Number(id) },
-    });
-    res.status(204).send();
+    await prisma.tarefa.delete({ where: { id: Number(id) } })
+    res.json({ ok: true })
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ erro: 'Erro ao deletar tarefa' })
   }
-};
+}
+
+module.exports = {
+  criarTarefa,
+  listarTarefas,
+  atualizarTarefa,
+  deletarTarefa
+}

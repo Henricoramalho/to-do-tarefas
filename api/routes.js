@@ -1,16 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const usuarioController = require('./controllers/usuarioController');
-const tarefaController = require('./controllers/tarefaController');
+const express = require('express')
+const router = express.Router()
 
-// Rotas de Usuário
-router.post('/usuarios', usuarioController.create);
-router.get('/usuarios', usuarioController.getAll);
+const usuarioController = require('./controllers/usuarioController')
 
-// Rotas de Tarefa
-router.post('/tarefas', tarefaController.create);
-router.get('/tarefas', tarefaController.getAll);
-router.put('/tarefas/:id', tarefaController.update);
-router.delete('/tarefas/:id', tarefaController.delete);
+const tarefaController = require('./controllers/tarefaController')
 
-module.exports = router;
+router.post('/usuarios', usuarioController.criarUsuario)
+router.get('/usuarios', usuarioController.listarUsuarios)
+
+router.post('/tarefas', tarefaController.criarTarefa)
+router.get('/tarefas', tarefaController.listarTarefas)
+router.put('/tarefas/:id', tarefaController.atualizarTarefa)
+router.delete('/tarefas/:id', tarefaController.deletarTarefa)
+
+module.exports = router
